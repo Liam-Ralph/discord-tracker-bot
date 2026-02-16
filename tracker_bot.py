@@ -13,5 +13,19 @@
 # Imports
 
 import discord
-from discord_token import discord_token
 from bot_settings import *
+
+
+# Main Function
+
+def main():
+
+    @client.event
+    async def on_ready():
+        print(client.user.name + " is online.")
+
+bot_intents = discord.Intents.default()
+bot_intents.message_content = True
+client = discord.Client(intents = bot_intents)
+main()
+client.run(DISCORD_TOKEN)
