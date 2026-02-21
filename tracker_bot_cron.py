@@ -37,7 +37,7 @@ def main():
     end_time = string_to_minutes(DAY_END)
     ping_times = []
     while len(ping_times) < PINGS_PER_DAY:
-        random_time = start_time + random.randint(start_time, end_time)
+        random_time = random.randint(start_time, end_time)
         acceptable_ping = True
         for ping_time in ping_times:
             if abs(ping_time - random_time) > 30:
@@ -70,7 +70,7 @@ def main():
         cronfile.write(
             str(minutes) + " " + str(hours) + " * * * root python3 /usr/bin/tracker_bot_cron.py &\n"
         )
-    
+
     subprocess.run(["crontab", CRONFILE_PATH])
 
     # Schedule RTCWake for First Ping
