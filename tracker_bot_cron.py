@@ -65,8 +65,8 @@ def main():
                 "/usr/sbin/rtcwake -m off -s " + str(off_time) + "\n"
             )
 
-        hours = DAY_START // 60
-        minutes = DAY_START - hours * 60
+        hours = start_time // 60
+        minutes = start_time - hours * 60
         cronfile.write(
             str(minutes) + " " + str(hours) + " * * * root python3 /usr/bin/tracker_bot_cron.py &\n"
         )
