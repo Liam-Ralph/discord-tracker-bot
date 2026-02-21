@@ -60,14 +60,15 @@ def main():
             else:
                 off_time = cron_start_time + 86400 - ping_time - 900
             cronfile.write(
-                minutes + " " + hours + " * * * root python3 /usr/bin/tracker_bot.py & && " +
-                "/usr/sbin/rtcwake -m off -s " + off_time + "\n"
+                str(minutes) + " " + str(hours) +
+                " * * * root python3 /usr/bin/tracker_bot.py & && " +
+                "/usr/sbin/rtcwake -m off -s " + str(off_time) + "\n"
             )
 
         hours = DAY_START // 60
         minutes = DAY_START - hours * 60
         cronfile.write(
-            minutes + " " + hours + " * * * root python3 /usr/bin/tracker_bot_cron.py &\n"
+            str(minutes) + " " + str(hours) + " * * * root python3 /usr/bin/tracker_bot_cron.py &\n"
         )
     
     subprocess.run(["cron", CRONFILE_PATH])
@@ -77,6 +78,6 @@ def main():
     log_message(__file__, "Cron jobs set")
 
     off_time = ping_times[i] - cron_start_time - 900
-    subprocess.run(["/usr/sbin/rtcwake", "-m", "off", "-s", off_time])
+    subprocess.run(["/usr/sbin/rtcwake", "-m", "off", "-s", str(off_time)])
 
 main()

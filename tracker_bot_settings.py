@@ -41,4 +41,4 @@ DAY_END = "20:00"
 def log_message(name, message):
 
     with open(LOG_PATH, "a") as logfile:
-        logfile.write(datetime.datetime.now() + " " + name + ": " + message + "\n")
+        logfile.write(str(datetime.datetime.now()) + " " + name + ": " + message + "\n")

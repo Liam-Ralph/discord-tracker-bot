@@ -42,7 +42,7 @@ def main():
         for message in messages:
             with open(RESULTS_PATH, "a") as csvfile:
                 csvfile.write(
-                    message.created_at.date() + ", " + message.created_at.time() + ", " +
+                    str(message.created_at.date()) + ", " + str(message.created_at.time()) + ", " +
                     message.content + "\n"
                 )
 
