@@ -13,7 +13,7 @@
 # Imports
 
 import discord
-from bot_settings import *
+from tracker_bot_settings import *
 
 
 # Main Function
