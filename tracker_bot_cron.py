@@ -54,7 +54,7 @@ def main():
         for i in range(len(ping_times)):
             ping_time = ping_times[i]
             hours = ping_time // 60
-            minutes = ping_time - hours * 60
+            minutes = ping_time % 60
             if i != len(ping_times) - 1:
                 off_time = ping_times[i + 1] - ping_time - 15
             else:
@@ -66,12 +66,12 @@ def main():
             )
 
         hours = start_time // 60
-        minutes = start_time - hours * 60
+        minutes = start_time % 60
         cronfile.write(
             str(minutes) + " " + str(hours) + " * * * root python3 /usr/bin/tracker_bot_cron.py &\n"
         )
     
-    subprocess.run(["cron", CRONFILE_PATH])
+    subprocess.run(["crontab", CRONFILE_PATH])
 
     # Schedule RTCWake for First Ping
 
