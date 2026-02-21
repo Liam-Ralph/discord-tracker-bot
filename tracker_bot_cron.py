@@ -29,7 +29,7 @@ def string_to_minutes(string):
 # Main Function
 
 def main():
-    
+
     # Calculate Random Ping Times
 
     start_time = string_to_minutes(DAY_START)
@@ -40,7 +40,7 @@ def main():
         random_time = start_time + random.randint(start_time, end_time)
         acceptable_ping = True
         for ping_time in ping_times:
-            if abs(ping_time - random_time) < 1800:
+            if abs(ping_time - random_time) > 1800:
                 acceptable_ping = False
                 break
         if acceptable_ping:
