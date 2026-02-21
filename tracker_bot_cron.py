@@ -12,9 +12,10 @@
 
 # Imports
 
-from tracker_bot_settings import *
 import random
 import subprocess
+
+from tracker_bot_settings import *
 
 
 # Functions
@@ -72,6 +73,8 @@ def main():
     subprocess.run(["cron", CRONFILE_PATH])
 
     # Schedule RTCWake for First Ping
+
+    log_message(__file__, "Cron jobs set")
 
     off_time = ping_times[i] - cron_start_time - 900
     subprocess.run(["/usr/sbin/rtcwake", "-m", "off", "-s", off_time])

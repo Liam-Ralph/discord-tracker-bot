@@ -1,4 +1,4 @@
-tracker_bot_settings.py
+
 *.csv
 *.txt
 __pycache__

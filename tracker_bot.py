@@ -12,7 +12,9 @@
 
 # Imports
 
+import datetime
 import discord
+
 from tracker_bot_settings import *
 
 
@@ -22,7 +24,40 @@ def main():
 
     @client.event
     async def on_ready():
-        print(client.user.name + " is online.")
+
+        log_message(__file__, client.user.name + " online")
+
+        # Read New Messages
+
+        user = await client.fetch_user(USER_ID)
+        channel = await user.create_dm()
+
+        messages = []
+        async for message in channel.history(limit = None):
+            if message.author == client.user:
+                break
+            messages.append(message)
+        messages.reverse()
+
+        for message in messages:
+            with open(RESULTS_PATH, "a") as csvfile:
+                csvfile.write(
+                    message.created_at.date() + ", " + message.created_at.time() + ", " +
+                    message.content + "\n"
+                )
+
+        log_message(__file__, "Read " + len(messages) + " messages")
+
+        # Send Ping
+
+        embed = discord.Embed(
+            title = "Ping",
+            description = str(datetime.datetime.now().time()).split(".")[0]
+        )
+        embed.set_footer(len(messages) + " read since last ping")
+        await user.send(embed = embed)
+
+        log_message(__file__, "User pinged")
 
 bot_intents = discord.Intents.default()
 bot_intents.message_content = True
