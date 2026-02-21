@@ -33,14 +33,14 @@ def main():
     # Calculate Random Ping Times
 
     start_time = string_to_minutes(DAY_START)
-    cron_start_time = start_time - 1800
+    cron_start_time = start_time - 30
     end_time = string_to_minutes(DAY_END)
     ping_times = []
     while len(ping_times) < PINGS_PER_DAY:
         random_time = start_time + random.randint(start_time, end_time)
         acceptable_ping = True
         for ping_time in ping_times:
-            if abs(ping_time - random_time) > 1800:
+            if abs(ping_time - random_time) > 30:
                 acceptable_ping = False
                 break
         if acceptable_ping:
@@ -56,9 +56,9 @@ def main():
             hours = ping_time // 60
             minutes = ping_time - hours * 60
             if i != len(ping_times) - 1:
-                off_time = ping_times[i + 1] - ping_time - 900
+                off_time = ping_times[i + 1] - ping_time - 15
             else:
-                off_time = cron_start_time + 86400 - ping_time - 900
+                off_time = cron_start_time + 24 * 60 - ping_time - 15
             cronfile.write(
                 str(minutes) + " " + str(hours) +
                 " * * * root python3 /usr/bin/tracker_bot.py & && " +
@@ -77,7 +77,7 @@ def main():
 
     log_message(__file__, "Cron jobs set")
 
-    off_time = ping_times[i] - cron_start_time - 900
+    off_time = ping_times[i] - cron_start_time - 15
     subprocess.run(["/usr/sbin/rtcwake", "-m", "off", "-s", str(off_time)])
 
 main()
