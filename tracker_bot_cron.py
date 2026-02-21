@@ -40,7 +40,7 @@ def main():
         random_time = random.randint(start_time, end_time)
         acceptable_ping = True
         for ping_time in ping_times:
-            if abs(ping_time - random_time) > 30:
+            if abs(ping_time - random_time) < 30:
                 acceptable_ping = False
                 break
         if acceptable_ping:
