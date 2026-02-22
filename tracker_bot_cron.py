@@ -27,7 +27,7 @@ def string_to_minutes(string):
 
 def minutes_to_string(mins_tot):
 
-    return str(mins_tot // 60).rjust(2, "0") + str(mins_tot % 60).rjust(2, "0")
+    return str(mins_tot // 60).rjust(2, "0") + ":" + str(mins_tot % 60).rjust(2, "0")
 
 def datetime_to_cron(date):
 
