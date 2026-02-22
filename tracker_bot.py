@@ -59,6 +59,8 @@ def main():
 
         log_message(__file__, "User pinged")
 
+        exit(0)
+
 bot_intents = discord.Intents.default()
 bot_intents.message_content = True
 client = discord.Client(intents = bot_intents)
