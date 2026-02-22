@@ -32,7 +32,7 @@ def minutes_to_string(mins_tot):
 def datetime_to_cron(date):
 
     _, month, day = str(date).split("-")
-    weekday = str(date.isoweekday())
+    weekday = str(date.isoweekday() % 7)
     return f"{day.rjust(2, "0")} {month.rjust(2, "0")} {weekday}"
 
 
@@ -76,7 +76,7 @@ def main():
 
             cronfile.write(
                 f"{str(minutes)} {str(hours)} {datetime_to_cron(today)} " +
-                "root python3 /usr/bin/tracker_bot.py & && " +
+                "root python3 /usr/bin/tracker_bot.py && " +
                 "/usr/sbin/rtcwake -m off --date \"" + date_string + "\"\n"
             )
 
@@ -84,7 +84,7 @@ def main():
         minutes = DAY_START % 60
         cronfile.write(
             f"{str(minutes)} {str(hours)} {datetime_to_cron(tomorrow)} " +
-            "root python3 /usr/bin/tracker_bot_cron.py &\n"
+            "root python3 /usr/bin/tracker_bot_cron.py\n"
         )
 
     subprocess.run(["crontab", CRONFILE_PATH])
