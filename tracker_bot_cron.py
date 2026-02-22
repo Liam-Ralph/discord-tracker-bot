@@ -25,6 +25,16 @@ def string_to_minutes(string):
     str_hour, str_min = string.split(":")
     return int(str_hour) * 60 + int(str_min)
 
+def minutes_to_string(mins_tot):
+
+    return str(mins_tot // 60).rjust(2, "0") + str(mins_tot % 60).rjust(2, "0")
+
+def datetime_to_cron(date):
+
+    _, month, day = str(date).split("-")
+    weekday = str(date.isoweekday())
+    return f"{month.rjust(2, "0")} {day.rjust(2, "0")} {weekday}"
+
 
 # Main Function
 
@@ -32,12 +42,9 @@ def main():
 
     # Calculate Random Ping Times
 
-    start_time = string_to_minutes(DAY_START)
-    cron_start_time = start_time - 30
-    end_time = string_to_minutes(DAY_END)
     ping_times = []
     while len(ping_times) < PINGS_PER_DAY:
-        random_time = random.randint(start_time, end_time)
+        random_time = random.randint(DAY_START, DAY_END)
         acceptable_ping = True
         for ping_time in ping_times:
             if abs(ping_time - random_time) < 30:
@@ -51,24 +58,31 @@ def main():
 
     with open(CRONFILE_PATH, "w") as cronfile:
 
+        today = datetime.date.today()
+        tomorrow = today + datetime.timedelta(days = 1)
+
         for i in range(len(ping_times)):
+
             ping_time = ping_times[i]
             hours = ping_time // 60
             minutes = ping_time % 60
+
             if i != len(ping_times) - 1:
-                off_time = ping_times[i + 1] - ping_time - 15
+                date_string = str(today) + " " + minutes_to_string(ping_times[i + 1])
             else:
-                off_time = cron_start_time + 24 * 60 - ping_time - 15
+                date_string = str(tomorrow) + " " + minutes_to_string(DAY_START - 30)
+
             cronfile.write(
-                str(minutes) + " " + str(hours) +
-                " * * * root python3 /usr/bin/tracker_bot.py & && " +
-                "/usr/sbin/rtcwake -m off -s " + str(off_time) + "\n"
+                f"{str(minutes)} {str(hours)} {datetime_to_cron(today)} " +
+                "root python3 /usr/bin/tracker_bot.py & && " +
+                "/usr/sbin/rtcwake -m off --date \"" + date_string + "\"\n"
             )
 
-        hours = start_time // 60
-        minutes = start_time % 60
+        hours = DAY_START // 60
+        minutes = DAY_START % 60
         cronfile.write(
-            str(minutes) + " " + str(hours) + " * * * root python3 /usr/bin/tracker_bot_cron.py &\n"
+            f"{str(minutes)} {str(hours)} {datetime_to_cron(tomorrow)} " +
+            "root python3 /usr/bin/tracker_bot_cron.py &\n"
         )
 
     subprocess.run(["crontab", CRONFILE_PATH])
@@ -77,7 +91,9 @@ def main():
 
     log_message(__file__, "Cron jobs set")
 
-    off_time = ping_times[i] - cron_start_time - 15
-    subprocess.run(["/usr/sbin/rtcwake", "-m", "off", "-s", str(off_time)])
+    subprocess.run([
+        "/usr/sbin/rtcwake", "-m", "off", "--date",
+        str(today) + " " + minutes_to_string(ping_times[0])
+    ])
 
 main()

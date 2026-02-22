@@ -32,8 +32,8 @@ LOG_PATH = BASE_PATH + "log.txt" # Required only for log_message
 # Ping Information
 
 PINGS_PER_DAY = 10
-DAY_START = "8:00"
-DAY_END = "20:00"
+DAY_START = 8 * 60
+DAY_END = 20 * 60
 
 
 # Functions
