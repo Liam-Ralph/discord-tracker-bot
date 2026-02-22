@@ -33,7 +33,7 @@ def datetime_to_cron(date):
 
     _, month, day = str(date).split("-")
     weekday = str(date.isoweekday())
-    return f"{month.rjust(2, "0")} {day.rjust(2, "0")} {weekday}"
+    return f"{day.rjust(2, "0")} {month.rjust(2, "0")} {weekday}"
 
 
 # Main Function
@@ -47,7 +47,7 @@ def main():
         random_time = random.randint(DAY_START, DAY_END)
         acceptable_ping = True
         for ping_time in ping_times:
-            if abs(ping_time - random_time) < 30:
+            if abs(ping_time - random_time) < MIN_PING_GAP:
                 acceptable_ping = False
                 break
         if acceptable_ping:
@@ -68,9 +68,11 @@ def main():
             minutes = ping_time % 60
 
             if i != len(ping_times) - 1:
-                date_string = str(today) + " " + minutes_to_string(ping_times[i + 1])
+                date_string = (
+                    str(today) + " " + minutes_to_string(ping_times[i + 1] - PRE_PING_BOOT)
+                )
             else:
-                date_string = str(tomorrow) + " " + minutes_to_string(DAY_START - 30)
+                date_string = str(tomorrow) + " " + minutes_to_string(DAY_START - PRE_PING_BOOT)
 
             cronfile.write(
                 f"{str(minutes)} {str(hours)} {datetime_to_cron(today)} " +
@@ -93,7 +95,7 @@ def main():
 
     subprocess.run([
         "/usr/sbin/rtcwake", "-m", "off", "--date",
-        str(today) + " " + minutes_to_string(ping_times[0])
+        str(today) + " " + minutes_to_string(ping_times[0] - PRE_PING_BOOT)
     ])
 
 main()
