@@ -54,7 +54,7 @@ def main():
             title = "Ping",
             description = str(datetime.datetime.now().time()).split(".")[0]
         )
-        embed.set_footer(str(len(messages)) + " read since last ping")
+        embed.set_footer(text = str(len(messages)) + " read since last ping")
         await user.send(embed = embed)
 
         log_message(__file__, "User pinged")
