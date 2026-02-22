@@ -59,10 +59,11 @@ def main():
 
         log_message(__file__, "User pinged")
 
-        exit(0)
+        await client.close()
 
 bot_intents = discord.Intents.default()
 bot_intents.message_content = True
 client = discord.Client(intents = bot_intents)
 main()
 client.run(DISCORD_TOKEN)
+exit(0)
