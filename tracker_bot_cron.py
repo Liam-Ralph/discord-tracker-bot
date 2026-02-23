@@ -76,7 +76,7 @@ def main():
 
             cronfile.write(
                 f"{str(minutes)} {str(hours)} {datetime_to_cron(today)} " +
-                "root python3 /usr/bin/tracker_bot.py && " +
+                "python3 /usr/bin/tracker_bot.py && " +
                 "/usr/sbin/rtcwake -m off --date \"" + date_string + "\"\n"
             )
 
@@ -84,7 +84,7 @@ def main():
         minutes = DAY_START % 60
         cronfile.write(
             f"{str(minutes)} {str(hours)} {datetime_to_cron(tomorrow)} " +
-            "root python3 /usr/bin/tracker_bot_cron.py\n"
+            "python3 /usr/bin/tracker_bot_cron.py\n"
         )
 
     subprocess.run(["crontab", CRONFILE_PATH])
