@@ -72,7 +72,7 @@ def main():
                     str(today) + " " + minutes_to_string(ping_times[i + 1] - PRE_PING_BOOT)
                 )
             else:
-                date_string = str(tomorrow) + " " + minutes_to_string(DAY_START - PRE_PING_BOOT)
+                date_string = str(tomorrow) + " " + minutes_to_string(DAY_START - PRE_PING_BOOT * 2)
 
             cronfile.write(
                 f"{str(minutes)} {str(hours)} {datetime_to_cron(today)} " +
