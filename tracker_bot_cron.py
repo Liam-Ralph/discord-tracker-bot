@@ -80,8 +80,8 @@ def main():
                 "/usr/sbin/rtcwake -m off --date \"" + date_string + "\"\n"
             )
 
-        hours = DAY_START // 60
-        minutes = DAY_START % 60
+        hours = (DAY_START - PRE_PING_BOOT) // 60
+        minutes = (DAY_START - PRE_PING_BOOT) % 60
         cronfile.write(
             f"{str(minutes)} {str(hours)} {datetime_to_cron(tomorrow)} " +
             "python3 /usr/bin/tracker_bot_cron.py\n"
