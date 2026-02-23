@@ -21,6 +21,9 @@ from tracker_bot_settings import *
 # Main Function
 
 def main():
+    """
+    Main function, reads user's messages since last ping, then sends new ping.
+    """
 
     @client.event
     async def on_ready():

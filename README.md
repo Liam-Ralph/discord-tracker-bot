@@ -15,7 +15,7 @@ since the last ping.
 
 ## Requirements
 Requires Linux, as well as rtcwake, which must also be supported by your
-hardware.
+hardware. Also requires the Discord library for Python.
 
 <br/>
 
@@ -26,6 +26,7 @@ as detailed in LICENSE.
 <br/>
 
 ## Usage
+
  - Set up your variables in `tracker_bot_settings.py`.
  - Set up the files defined in your settings, namely `RESULTS_PATH`,
    `CRONFILE_PATH`, `LOG_PATH`.
@@ -34,3 +35,6 @@ as detailed in LICENSE.
  - Schdule the first run of `tracker_bot_cron.py` manually, either by running it
    yourself before `DAY_START`, or by scheduling it with cron and booting the
    machine with rtcwake.
+
+The user should include commas in their messages if and only if they want to
+denote separate categories to be logged.

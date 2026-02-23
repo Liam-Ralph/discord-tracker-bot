@@ -21,15 +21,35 @@ from tracker_bot_settings import *
 # Functions
 
 def string_to_minutes(string):
+    """
+    Convert a given string of format "HH:MM" into a number of minutes since
+    00:00. Must be a 24-hour time.
+
+    :param string: The string, of format "HH:MM", to be converted.
+    """
 
     str_hour, str_min = string.split(":")
     return int(str_hour) * 60 + int(str_min)
 
 def minutes_to_string(mins_tot):
+    """
+    Converts a time to a 24-hour time string of format "HH:MM". Midnight is
+    00:00.
 
-    return str(mins_tot // 60).rjust(2, "0") + ":" + str(mins_tot % 60).rjust(2, "0")
+    :param mins_tot: The time, in minutes since 00:00, to be converted.
+    """
+
+    hours = "00" if mins_tot == 24 * 60 else str(mins_tot // 60)
+    return hours.rjust(2, "0") + ":" + str(mins_tot % 60).rjust(2, "0")
 
 def datetime_to_cron(date):
+    """
+    Converts a date of format "YYYY-MM-DD" to the format "dom mon dow" for
+    scheduling a cron job. dom, mon, and dow stand for day of month, month, and
+    day of week respectively. dow is 0 on Sunday.
+
+    :param date: The date to be converted.
+    """
 
     _, month, day = str(date).split("-")
     weekday = str(date.isoweekday() % 7)
@@ -39,6 +59,9 @@ def datetime_to_cron(date):
 # Main Function
 
 def main():
+    """
+    Main function, sets ping times and schedules cron jobs.
+    """
 
     # Calculate Random Ping Times
 
